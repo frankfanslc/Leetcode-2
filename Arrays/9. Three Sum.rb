@@ -5,53 +5,53 @@ def three_sum(nums)
   return [] if nums.empty?
   return [] if nums.length <= 2
 
-  # 1. Take first two elements
-  # 2. Add them and find the third complement
-  # 3. See if complement exists, if yes, add to result
-  # 4. Take next two elements
-  # 5. Repeat till end
+  sorted = nums.sort
+  triplets = []
 
-  left = 0
-  right = left + 1
-  last = nums.length - 1
-  result = []
-  hash = {}
-  nums.each_with_index do |num, idx|
-    if hash[num]
-      hash[num] << idx
-    else
-      hash[num] = [idx]
-    end
-  end
+  # 1. We iterate through the entire sorted array
+  # 2. Left and Right is idx + 1 and end of array
+  # 3. If triplets are LESS than 0, we move left
+  #    to the right to INCREASE sum
+  # 4. If triplets are GREATER than 0, we move right
+  #    to the left to DECREASE sum
+  # 5. Save and triplets that result in 0
+  # 6. Continue with while loop and then continue
+  #    with each interation
+  # 7. Ensure results are sorted + uniq
 
-  while right <= last
-    complement = -(nums[left] + nums[right])
+  sorted.each_with_index do |num, idx|
+    # Important to skip next iteration if
+    # it is the same as previous number unless
+    # it is the first iteration
+    next if num == sorted[idx-1] && idx != 0
 
-    if hash[complement]
-      repeats = hash[complement].length
+    left = idx + 1
+    right = nums.length - 1
 
-      if repeats >= 3
-        result << [nums[left], nums[right], complement].sort!
-      elsif repeats == 2 && !hash[complement].include?(left) && !hash[complement].include?(right)
-        result << [nums[left], nums[right], complement].sort!
-      elsif !hash[complement].include?(left) && !hash[complement].include?(right)
-        result << [nums[left], nums[right], complement].sort!
+
+    while left < right do
+      sum = num + sorted[left] + sorted[right]
+
+      if sum == 0
+        triplets << [num, sorted[left], sorted[right]].sort
+        left += 1
+      elsif sum < 0
+        left += 1
+      else
+        right -= 1
       end
-
-      result.uniq!
     end
-
-    left += 1
-    right += 1
   end
 
-  binding.pry
-  result.reverse
+  triplets.uniq!
+  triplets
 end
 
+
+
 p three_sum([-1,0,1,2,-1,-4]) == [[-1,-1,2], [-1,0,1]]
-# p three_sum([0,0,0]) == [[0,0,0]]
-# p three_sum([-1,0,1]) == [[-1,0,1]]
-# p three_sum([3,-2,1,0]) == []
-# p three_sum([]) == []
-# p three_sum([0]) == []
+p three_sum([0,0,0]) == [[0,0,0]]
+p three_sum([-1,0,1]) == [[-1,0,1]]
+p three_sum([3,-2,1,0]) == []
+p three_sum([]) == []
+p three_sum([0]) == []
