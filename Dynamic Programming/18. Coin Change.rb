@@ -1,33 +1,21 @@
 require 'pry'
 
+# [2,3,5]
 def coin_change(coins, amount)
-  # Assumes there will always be a 1
-  if amount == 0
-    return 0
-  end
-
-  coins = coins.sort!.reverse
-  remainder = amount
   result = []
 
-  coins.each do |coin|
-    coin_amount = remainder / coin
-    remainder = remainder - (coin_amount * coin)
+  amount.times do |x|
+    result << x if x == 0
 
-    if coin_amount > 0
-      result << coin_amount
+    coins.each do |coin|
+      temp = []
+      change_attempt = x % coin
+      temp << change_attempt if change_attempt == 0
+      result[x] << temp.min
     end
   end
 
-  if result.empty?
-    return -1
-  end
-
-  if remainder > 0
-    return -1
-  end
-
-  result.sum
+  result[n]
 end
 
 p coin_change([1,2,5], 11) == 3
