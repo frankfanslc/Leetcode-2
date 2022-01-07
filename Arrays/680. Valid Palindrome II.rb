@@ -1,5 +1,8 @@
 require 'pry'
 
+# Runtime: 112 ms, faster than 100.00% of Ruby online submissions for Valid Palindrome II.
+#
+# Memory Usage: 213.5 MB, less than 97.18% of Ruby online submissions for Valid Palindrome II.
 def valid_palindrome(s)
   left = 0
   right = s.length - 1
@@ -9,8 +12,8 @@ def valid_palindrome(s)
 
   while left <= right
     if s[left] != s[right]
-      one = s[left...right]
-      two = s[(left+1)...(right+1)]
+      one = s[left+1..right]
+      two = s[left..right-1]
 
       result = [one, two].map do |arr|
          arr.reverse == arr
