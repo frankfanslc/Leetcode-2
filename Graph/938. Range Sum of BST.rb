@@ -8,8 +8,7 @@ def range_sum_bst(root, low, high)
 
   stack = [root]
 
-  binding.pry
-  while !stack.empty?
+  while stack.any?
     current = stack.pop
 
     if range.include? current.val
