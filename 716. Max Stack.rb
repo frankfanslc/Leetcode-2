@@ -7,20 +7,22 @@ class MaxStack
   end
 
   def push(x)
-    if @max_stack.empty?
-      @max_stack << x
-    elsif x >= @max_stack[-1]
-      @max_stack << x
+    if @max_stack.any?
+      if x > peek_max
+        @max_stack << x
+      else
+        @max_stack << peek_max
+      end
     else
-      @max_stack.prepend(x)
+      @max_stack << x
     end
 
     @stack << x
   end
 
   def pop()
-    current = @stack.pop
-    current
+    @max_stack.pop
+    @stack.pop
   end
 
   def top()
@@ -28,14 +30,72 @@ class MaxStack
   end
 
   def peek_max()
-    if @max_stack.any?
-      @max_stack[-1]
-    end
+    @max_stack[-1]
   end
 
   def pop_max()
-    @stack.delete_at(@stack.index(@max_stack[-1]) || @stack.length)
-    max = @max_stack.pop
+    max = peek_max
+    temp_stack = []
+
+    while peek_max != top
+      temp_stack << pop
+    end
+
+    pop
+
+    temp_stack.reverse.each do |x|
+      @stack << x
+      @max_stack << x
+    end
+
+    max
+  end
+end
+
+class MaxStack
+  def initialize
+    @max_stack = []
+    @stack = []
+  end
+
+  def push(x)
+    max = if @max_stack.empty?
+            x
+          else
+            @max_stack[-1]
+          end
+
+    if x > max
+      @max_stack << x
+    else
+      @max_stack << max
+    end
+
+    @stack << x
+  end
+
+  def pop
+    @max_stack.pop
+    @stack.pop
+  end
+
+  def top
+    @stack[-1]
+  end
+
+  def peek_max
+    @max_stack[-1]
+  end
+
+  def pop_max
+    max = peek_max
+    temp = []
+    temp << pop while top != max
+
+    pop
+
+    push(temp.pop) until temp.empty?
+
     max
   end
 end
