@@ -10,7 +10,12 @@ class Logger
       @messages[message] = timestamp + 10
       return true
     else
-      timestamp > @messages[message]
+      if timestamp >= @messages[message]
+        @messages[message] = timestamp + 10
+        return true
+      else
+        return false
+      end
     end
   end
 end
