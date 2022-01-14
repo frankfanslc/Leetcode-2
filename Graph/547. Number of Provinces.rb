@@ -24,7 +24,10 @@ def find_circle_num(is_connected)
 
       visited << current
 
-      provinces +=1 if stack.empty?
+      # Traversal for this node/province is complete
+      if stack.empty?
+        provinces += 1
+      end
     end
   end
 
