@@ -101,8 +101,38 @@ p anagrams("paper",        "reapa")        == false
 p anagrams("elbow",        "below")        == true
 p anagrams("tax",          "taxi")         == false
 p anagrams("taxi",         "tax")          == false
+print "\n\n"
 
+def most_frequent_char(s)
+  return "" if s.nil?
 
+  most_frequent = 0
+  char_freq = s.chars.each_with_index.inject({}) do |memo, (char, idx)|
+    memo[char] ||= [0,idx]
+    memo[char][0] += 1
+
+    if memo[char][0] > most_frequent
+      most_frequent = memo[char][0]
+    end
+
+    memo
+  end
+
+  char_freq.select do |k,v|
+    v[0] == most_frequent
+  end.min_by do |k,v|
+    v[1]
+  end[0]
+end
+
+p "MOST FREQ CHAR"
+p most_frequent_char("bookeeper")     == "e"
+p most_frequent_char("david")         == "d"
+p most_frequent_char("abby")          == "b"
+p most_frequent_char("mississippi")   == "i"
+p most_frequent_char("potato")        == "o"
+p most_frequent_char("eleventennine") == "e"
+p most_frequent_char("riverbed")      == "r"
 
 
 
