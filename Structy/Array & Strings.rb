@@ -31,6 +31,7 @@ p uncompress("12y")     == "yyyyyyyyyyyy"
 p uncompress("10z")     == "zzzzzzzzzz"
 print "\n\n"
 
+
 def compress(s)
   s += "!"
   groups = []
@@ -70,6 +71,7 @@ def anagrams(s1, s2)
   s1.chars.sort == s2.chars.sort
 end
 
+
 # O(m + n)
 def anagrams(s1, s2)
   return false if s1.length != s2.length
@@ -102,6 +104,7 @@ p anagrams("elbow",        "below")        == true
 p anagrams("tax",          "taxi")         == false
 p anagrams("taxi",         "tax")          == false
 print "\n\n"
+
 
 # O(n)
 def most_frequent_char(s)
@@ -162,7 +165,35 @@ p pair_sum([4, 7, 9, 2, 5, 1], 3) == [3, 5]
 p pair_sum([1, 6, 7, 2], 13)      == [1, 2]
 p pair_sum([9, 9], 18)            == [0, 1]
 p pair_sum([6, 4, 2, 8 ], 12)     == [1, 3]
+print "\n\n"
 
+
+# O(n)
+def pair_product(numbers, target_product)
+  return StandardError if numbers.nil? or numbers.empty?
+  return StandardError if target_product.nil?
+
+  numbers.each_with_index.inject({}) do |memo, (num, idx)|
+    complement = target_product / num
+
+    if memo[complement]
+      return [memo[complement], idx]
+    end
+
+    memo[num] ||= []
+    memo[num] = idx
+    memo
+  end
+end
+
+p "PAIR PRODUCT"
+p pair_product([3, 2, 5, 4, 1], 8)     == [1, 3]
+p pair_product([3, 2, 5, 4, 1], 10)    == [1, 2]
+p pair_product([4, 7, 9, 2, 5, 1], 5)  == [4, 5]
+p pair_product([4, 7, 9, 2, 5, 1], 35) == [1, 4]
+p pair_product([3, 2, 5, 4, 1], 10)    == [1, 2]
+p pair_product([4, 6, 8, 2], 16)       == [2, 3]
+print "\n\n"
 
 
 
