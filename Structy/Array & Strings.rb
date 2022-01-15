@@ -63,3 +63,83 @@ p "3n12e2z" == compress("nnneeeeeeeeeeeezz")
 p "12y"     == compress("yyyyyyyyyyyy")
 p "10z"     == compress("zzzzzzzzzz")
 print "\n\n"
+
+def anagrams(s1, s2)
+  return false if s1.length != s2.length
+
+  s1.chars.sort == s2.chars.sort
+end
+
+# O(m + n)
+def anagrams(s1, s2)
+  return false if s1.length != s2.length
+
+  s1_freq = s1.chars.inject({}) do |memo, char|
+    memo[char] ||= 0
+    memo[char] += 1
+    memo
+  end
+
+  s2.chars.each do |char|
+    return false if s1_freq[char].nil?
+
+    if s1_freq[char] == 1
+      s1_freq.delete(char)
+    else
+      s1_freq[char] -= 1
+    end
+  end
+
+  s1_freq.values.empty?
+end
+
+p "ANAGRAMS"
+p anagrams("restful",      "fluster")      == true
+p anagrams("cats",         "tocs")         == false
+p anagrams("monkeyswrite", "newyorktimes") == true
+p anagrams("paper",        "reapa")        == false
+p anagrams("elbow",        "below")        == true
+p anagrams("tax",          "taxi")         == false
+p anagrams("taxi",         "tax")          == false
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
