@@ -236,9 +236,61 @@ p intersection([0,1,2],   [10,11])      == []
 a = (0..50_000).to_a
 b = (0..50_000).to_a
 p intersection(a, b) == a
+print "\n\n"
 
 
+# O(n)
+# O(1)
+def five_sort(nums)
+  return StandardError if nums.nil?
+  return [] if nums.empty?
 
+  fives = 0
+  nums.each_with_index do |num, idx|
+    if num == 5
+      nums[idx] = nil
+      fives += 1
+    end
+  end
+  nums.compact!.sort!
+
+  fives.times do
+    nums << 5
+  end
+
+  nums
+end
+
+# Two pointer approach O(1)
+def five_sort(nums)
+  return StandardError if nums.nil?
+  return [] if nums.empty?
+
+  left = 0
+  right = nums.length - 1
+
+  while left <= right
+    while nums[right] == 5
+      right -= 1
+    end
+
+    if nums[left] == 5 && nums[right] != 5
+      nums[left] = nums[right]
+      nums[right] = 5
+    else
+      left += 1
+    end
+  end
+
+  nums
+end
+
+p "FIVE SORT"
+p five_sort([12, 5, 1, 5, 12, 7])
+p five_sort([5, 2, 5, 6, 5, 1, 10, 2, 5, 5])
+p five_sort([5, 5, 5, 1, 1, 1, 4])
+p five_sort([5, 5, 6, 5, 5, 5, 5])
+p five_sort([5, 1, 2, 5, 5, 3, 2, 5, 1, 5, 5, 5, 4, 5])
 
 
 
