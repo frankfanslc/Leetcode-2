@@ -103,6 +103,7 @@ p anagrams("tax",          "taxi")         == false
 p anagrams("taxi",         "tax")          == false
 print "\n\n"
 
+# O(n)
 def most_frequent_char(s)
   return "" if s.nil?
 
@@ -133,7 +134,34 @@ p most_frequent_char("mississippi")   == "i"
 p most_frequent_char("potato")        == "o"
 p most_frequent_char("eleventennine") == "e"
 p most_frequent_char("riverbed")      == "r"
+print "\n\n"
 
+
+# O(n)
+def pair_sum(numbers, target_sum)
+  return StandardError if numbers.nil? or numbers.empty?
+  return StandardError if target_sum.nil?
+
+  numbers.each_with_index.inject({}) do |memo, (num, idx)|
+    complement = target_sum - num
+
+    if memo[complement]
+      return [memo[complement], idx]
+    end
+
+    memo[num] ||= []
+    memo[num] = idx
+    memo
+  end
+end
+
+p "PAIR SUM"
+p pair_sum([3, 2, 5, 4, 1], 8)    == [0, 2]
+p pair_sum([4, 7, 9, 2, 5, 1], 5) == [0, 5]
+p pair_sum([4, 7, 9, 2, 5, 1], 3) == [3, 5]
+p pair_sum([1, 6, 7, 2], 13)      == [1, 2]
+p pair_sum([9, 9], 18)            == [0, 1]
+p pair_sum([6, 4, 2, 8 ], 12)     == [1, 3]
 
 
 
