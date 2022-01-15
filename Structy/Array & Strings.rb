@@ -196,6 +196,48 @@ p pair_product([4, 6, 8, 2], 16)       == [2, 3]
 print "\n\n"
 
 
+# O(n + 2 Log m) Time
+# O(min(m,n) Space
+def intersection(a, b)
+  return StandardError if a.nil? || b.nil?
+  return [] if a.empty? || b.empty?
+
+  intersections = []
+  b.sort!
+
+  a.each do |num|
+    left = 0
+    right = b.length - 1
+
+    while left <= right
+      mid = (right + left) / 2
+
+      if b[mid] == num
+        intersections << num
+        break
+      end
+
+      if b[mid] > num
+        right = mid - 1
+      else
+        left = mid + 1
+      end
+    end
+  end
+
+  intersections.sort
+end
+
+p "INTERSECTIONS"
+p intersection([4,2,1,6], [3,6,9,2,10]) == [2,6]
+p intersection([2,4,6],   [4,2])        == [2,4]
+p intersection([4,2,1],   [1,2,4,6])    == [1,2,4]
+p intersection([0,1,2],   [10,11])      == []
+a = (0..50_000).to_a
+b = (0..50_000).to_a
+p intersection(a, b) == a
+
+
 
 
 
