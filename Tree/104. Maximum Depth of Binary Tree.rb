@@ -11,6 +11,8 @@ require 'pry'
 # end
 # @param {TreeNode} root
 # @return {Integer}
+#
+# Recursive
 def max_depth(root)
   return 0 if root == nil
 
