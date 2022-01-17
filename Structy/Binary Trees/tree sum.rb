@@ -27,6 +27,12 @@ def tree_sum(root)
   sum
 end
 
+def tree_sum(root)
+  return 0 if root.nil?
+
+  root.val + tree_sum(root.left) + tree_sum(root.right)
+end
+
 a = Node.new(3)
 b = Node.new(11)
 c = Node.new(4)
