@@ -12,14 +12,19 @@ def plus_one(digits)
   while remainder > 0
     idx = length - increment
 
-    if idx == 0 && remainder > 0
-      digits[idx] = 0
-      return digits.prepend(remainder)
+    if idx == 0
+      if (digits[idx] + remainder) > 9
+        digits[idx] = 0
+        return digits.prepend(remainder)
+      else
+        digits[idx] = digits[idx] + remainder
+        return digits
+      end
     end
 
     if (digits[idx] + remainder) > 9
-      digits[idx] = 0
       remainder = (digits[idx] + remainder) - 9
+      digits[idx] = 0
       increment += 1
     else
       digits[idx] = digits[idx] + remainder
