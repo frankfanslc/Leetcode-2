@@ -14,3 +14,17 @@ def max_profit(prices)
 
   max
 end
+
+# Kadane's Algo
+def max_profit(prices)
+  min_buy = prices.first
+  best_profit = 0
+
+  prices.each do |price|
+    min_buy = [min_buy, price].min
+    potential_profit = (price - min_buy)
+    best_profit = [best_profit, potential_profit].max
+  end
+
+  best_profit
+end
