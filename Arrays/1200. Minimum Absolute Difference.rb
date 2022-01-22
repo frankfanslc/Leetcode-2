@@ -27,31 +27,30 @@ end
 def minimum_abs_difference(arr)
   return [] if arr.empty? || arr.nil?
 
+  arr.sort!
+
   left = 0
   right = 1
   length = arr.length - 1
-  diffs = {}
+  result = []
   min_diff = Float::INFINITY
 
   while left < length
     diff = (arr[left] - arr[right]).abs
-    diffs[diff] ||= Set.new
-    diffs[diff] << [arr[left], arr[right]].sort
+
+    if diff < min_diff
+      result = [[arr[left], arr[right]]]
+    elsif diff == min_diff
+      result << [arr[left], arr[right]]
+    end
+
     min_diff = [min_diff, diff].min
 
-    if right == length
-      left += 1
-      right = left + 1
-    else
-      right += 1
-    end
+    left += 1
+    right += 1
   end
 
-  binding.pry
-
-  diffs[min_diff].sort_by do |pair|
-    pair[0]
-  end
+  result
 end
 
 p minimum_abs_difference([4,2,1,3])
