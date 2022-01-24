@@ -1,100 +1,40 @@
 require 'pry'
 
-class LinkedList
-  attr_reader :head, :tail
+# Design a data structure that follows the constraints of a Least Recently Used
+# (LRU) cache.
 
-  def initialize
-    @head = ListNode.new(:head, nil)
-    @tail = ListNode.new(:tail, nil)
-    @head.next = @tail
-    @tail.prev = @head
-  end
+# Implement the LRUCache class:
 
-  def remove_node(node)
-    node.prev.next = node.next
-    node.next.prev = node.prev
-    node.prev = nil
-    node.next = nil
-    node
-  end
+# LRUCache(int capacity) Initialize the LRU cache with positive size capacity.
+#
+# int get(int key) Return the value of the key if the key exists, otherwise
+# return -1.
+#
+# void put(int key, int value) Update the value of the key if the key exists.
+# Otherwise, add the key-value pair to the cache. If the number of keys exceeds
+# the capacity from this operation, evict the least recently used key.
+#
+# The functions get and put must each run in O(1) average time complexity.
 
-  def add_to_top(node)
-    shifted = @head.next
-    @head.next = node
-    shifted.prev = node
-    node.next = shifted
-    node.prev = @head
-    node
-  end
+class Node
+  attr_accessor :key, :val, :prev, :next
 
-  def remove_bottom
-    removed = @tail.prev
-    @tail.prev = removed.prev
-    @tail.prev.next = @tail
-    removed.prev = nil
-    removed.next = nil
-    removed
-  end
-end
-
-class ListNode
-  attr_accessor :prev, :next, :value
-  attr_reader :key
-
-  def initialize(key, value)
+  def initialize(key, val)
     @key = key
-    @value = value
+    @val = val
   end
 end
 
 class LRUCache
+  attr_reader :capacity
 
   def initialize(capacity)
     @capacity = capacity
-    @cache = {} # key: key, value: node of DoublyLinkedList that holds the value and the adj connections.
-    @counter = 0
-    @list = LinkedList.new
   end
 
   def get(key)
-    return -1 if @cache[key].nil?
-
-    node = @cache[key]
-    @list.remove_node(node)
-    @list.add_to_top(node)
-
-    node.value
   end
 
   def put(key, value)
-    if @cache[key]
-      set_value(key, value)
-      return
-    end
-
-    insert_value(key, value)
-    nil
-  end
-
-  private
-
-  def set_value(key, value)
-    node = @cache[key]
-    node.value = value
-    # updating also changes the LRU statistics
-    @list.remove_node(node)
-    @list.add_to_top(node)
-  end
-
-  def insert_value(key, value)
-    node = ListNode.new(key, value)
-    @list.add_to_top(node)
-    @cache[key] = node
-    @counter += 1
-
-    if @counter > @capacity
-      removed = @list.remove_bottom
-      @cache.delete removed.key
-    end
   end
 end
