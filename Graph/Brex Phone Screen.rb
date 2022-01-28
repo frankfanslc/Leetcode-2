@@ -7,7 +7,7 @@ require 'pry'
 #  "Diana"  => ["London", "withdraw", "San Francisco"]
 # }
 def find_suspicious_activities(sus_activities, new_activities, k)
-  return StandardError if sus_activities.nil? || new_activities.nil? || k.nil?
+  raise "Invalid Arguments" if sus_activities.nil? || new_activities.nil? || k.nil?
 
   sus_activities = sus_activities.first
   result = []
@@ -42,7 +42,7 @@ sus_activities = [
 new_activities = [
   ["Joe", "Miami", "withdraw"],
   ["John", "San Francisco", "deposit"],
-  ["Albert", "England", "withdraw"],
+  ["Albert", "London", "withdraw"],
   ["Diana", "London", "withdraw"],
   ["Diana", "San Francisco", "withdraw"],
   ["Joe", "New York", "updateaddress"]

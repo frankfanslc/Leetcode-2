@@ -41,6 +41,8 @@ class WordDictionary
   def partial_match?(word)
     length = word.chars.length
 
+    return false if @words[length].nil?
+
     wildcard_indices = word.chars.each_with_index.map do |char, idx|
       next if char != "."
       idx
