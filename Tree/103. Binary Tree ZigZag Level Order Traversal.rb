@@ -1,19 +1,26 @@
 require 'pry'
 
-def level_order(root)
+def zigzag_level_order(root)
   return [] if root.nil?
 
   queue = [root, :stop]
   level = []
   result = []
+  reverse = false
 
   while queue.any?
     current = queue.shift
 
     if current == :stop
-      result << level
+      if reverse
+        result << level.reverse
+      else
+        result << level
+      end
+
       level = []
       queue << :stop unless queue.empty?
+      reverse = reverse ? false : true
       next
     end
 
