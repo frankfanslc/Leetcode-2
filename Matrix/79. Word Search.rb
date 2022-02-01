@@ -1,101 +1,83 @@
 require 'pry'
 
 def exist(board, word)
-  chars = word.chars
-  curr_chars_idx = 0
+  original_word = word
 
-  # 1. Start with [0,0]
-  # 2. If first letter of WORD
-  #     - Find valid next cells
-  #       - If valid cell -> continue
-  #       - If no valid cell -> repeat 1 at [0,1]
-  #    If not first letter of WORD -> repeat 1 at [0,1]
+  board.each_with_index do |row, ridx|
+    row.each_with_index do |col, cidx|
+      return true if dfs(board, [ridx, cidx], word.chars)
+      word = original_word # reset for next iteration
+    end
+  end
 
-  board.each_with_index do |row, r|
-    row.each_with_index do |col, c|
-      if board[r][c] == chars[curr_chars_idx]
-        result = traverse_path(r, c, board, chars, curr_chars_idx)
+  false
+end
+
+def dfs(board, coords, word)
+  stack = [coords] # [0, 0]
+  visited = []
+
+  while stack.any?
+    current = stack.pop
+    visited << current
+
+    if board[current[0]][current[1]] == word[0]
+      word.shift
+      stack << [current[0],    current[1] + 1] if current[1] + 1 < board[0].length  # right
+      stack << [current[0] + 1,current[1]]     if current[0] + 1 < board.length     # down
+      stack << [current[0],    current[1] - 1] if current[1] - 1 >= 0               # left
+      stack << [current[0] - 1,current[1]]     if current[0] - 1 >= 0               # up
+
+      stack.each do |coord|
+        if visited.include? coord
+          stack.delete(coord)
+        end
       end
-
-      return true if result
+    else
+      visited.pop
     end
   end
 
-  false
+  word.empty?
 end
 
-def traverse_path(r, c, board, chars, curr_chars_idx)
-  chars_limit = chars.length - 1
-  if curr_chars_idx + 1 == chars_limit
-    return true
-  end
-
-  top_border     = 0
-  right_border   = board[0].length - 1
-  bottom_border  = board.length - 1
-  left_border    = 0
-
-
-  # up
-  if r > top_border
-    if board[r-1][c] == chars[curr_chars_idx + 1]
-      return traverse_path(r-1, c, board, chars, curr_chars_idx + 1)
-    end
-  end
-
-  # right
-  if c < right_border
-    if board[r][c+1] == chars[curr_chars_idx + 1]
-      return traverse_path(r, c+1, board, chars, curr_chars_idx + 1)
-    end
-  end
-
-  # down
-  if r < bottom_border
-    if board[r+1][c] == chars[curr_chars_idx + 1]
-      return traverse_path(r+1, c, board, chars, curr_chars_idx + 1)
-    end
-  end
-
-  # left
-  if c > left_border
-    if board[r][c-1] == chars[curr_chars_idx + 1]
-      return traverse_path(r, c-1, board, chars, curr_chars_idx + 1)
-    end
-  end
-
-  curr_chars_idx = 0
-  false
-end
-
-board = [["A","B","C","E"],
-         ["S","F","C","S"],
-         ["A","D","E","E"]]
-
-word = "ABCCED"
+board = [["C","A","A"],
+         ["A","A","A"],
+         ["B","C","D"]]
+word = "AAB"
 output = true
 p exist(board, word) == output
 
+# board = [["A","B"],["C","D"]]
+# word = "ABDC"
+# output = true
+# p exist(board, word) == output
 
+# board = [["A","B"]]
+# word = "BA"
+# output = true
+# p exist(board, word) == output
 
+# board = [["A","B","C","E"],
+#          ["S","F","C","S"],
+#          ["A","D","E","E"]]
 
+# word = "ABCCED"
+# output = true
+# p exist(board, word) == output
 
-board = [["A","B","C","E"],
-         ["S","F","C","S"],
-         ["A","D","E","E"]]
+# board = [["A","B","C","E"],
+#          ["S","F","C","S"],
+#          ["A","D","E","E"]]
 
-word = "SEE"
-output = true
-p exist(board, word) == output
+# word = "SEE"
+# output = true
+# p exist(board, word) == output
 
+# board = [["A","B","C","E"],
+#          ["S","F","C","S"],
+#          ["A","D","E","E"]]
 
-
-
-
-board = [["A","B","C","E"],
-         ["S","F","C","S"],
-         ["A","D","E","E"]]
-
-word = "ABCB"
-output = false
-p exist(board, word) == output
+# word = "ABCB"
+# output = false
+# p exist(board, word) == output
