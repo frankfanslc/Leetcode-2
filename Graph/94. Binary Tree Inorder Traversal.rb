@@ -1,5 +1,6 @@
 require 'pry'
 
+# Iterative
 def inorder_traversal(root)
   return [] if root.nil?
 
@@ -19,4 +20,21 @@ def inorder_traversal(root)
   end
 
   result
+end
+
+# Recursive
+def inorder_traversal(root)
+  return [] if root.nil?
+
+  result = []
+
+  dfs(root, result)
+end
+
+def dfs(root, result)
+  return result if root.nil?
+
+  dfs(root.left, result)
+  result << root.val
+  dfs(root.right, result)
 end
