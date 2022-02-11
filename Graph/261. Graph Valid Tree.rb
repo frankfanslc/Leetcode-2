@@ -1,36 +1,41 @@
 require 'pry'
+require 'set'
 
-# Valid tree:
-#  - no cycles
-#  - no islands
 def valid_tree(n, edges)
-  raise StandardError if n.nil? || edges.nil?
-
-  # {
-  #   0 => [1, 2, 3],
-  #   4 => [1]
-  # }
-  adj_list = build_adjacency_list(n, edges)
-
-  visited = []
-
-  dfs(adj_list, visited)
-end
-
-def build_adjacency_list(n, edges)
-  adj_list = {}
-
-  edges.each do |edge|
-    adj_list[edge[0]] ||= []
-    adj_list[edge[0]] << edge[1]
+  if edges.empty?
+    valid = n == 1
+    return valid
   end
 
-  adj_list
+  adj_list = build_adjacency_list(edges)
+
+  stack = [{ node: adj_list.keys.first, prev: nil }]
+  visited = Set.new
+
+  while stack.any?
+    current = stack.pop
+
+    return false if visited.include?(current[:node])
+
+    visited << current[:node]
+
+    adj_list[current[:node]].each do |node|
+      next if node == current[:prev]
+      stack << { node: node, prev: current[:node] }
+    end
+  end
+
+  visited.length == n
 end
 
-def dfs(adj_list, visited)
-  return if
-
+def build_adjacency_list(edges)
+  edges.inject({}) do |adj_list, edge|
+    adj_list[edge[0]] ||= []
+    adj_list[edge[1]] ||= []
+    adj_list[edge[0]] << edge[1]
+    adj_list[edge[1]] << edge[0]
+    adj_list
+  end
 end
 
 p valid_tree(5, [[0,1],[0,2],[0,3],[1,4]])
