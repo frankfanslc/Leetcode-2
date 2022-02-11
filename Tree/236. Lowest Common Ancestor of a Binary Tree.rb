@@ -9,11 +9,11 @@ end
 def recurse_tree(node, p, q)
   return false if node.nil?
 
-  mid = node.val == p.val ||
-        node.val == q.val
-
   left  = recurse_tree(node.left, p, q)
   right = recurse_tree(node.right, p, q)
+
+  mid = node.val == p.val ||
+        node.val == q.val
 
   if mid && (left || right)
     return node
